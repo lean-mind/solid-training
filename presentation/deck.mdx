@@ -1,0 +1,131 @@
+import defaultTheme, {highlight} from 'mdx-deck/themes'
+import {Logo} from '../components'
+import {CodeSurfer} from "code-surfer";
+import UncleBob from "../assets/UncleBob.png"
+import solid from "../assets/solid.png"
+
+export const theme = {
+  ...defaultTheme,
+  ...highlight
+}
+
+<img src={solid}/>
+
+<Logo/>
+
+<Notes>
+
+  - No son dogmas
+  - Principios que nos guían para la generación de código más sostenible
+  - Cinco principios básicos de la programación orientada a objetos
+  - Su conocimiento ayuda en la implementación de patrones de diseño
+
+</Notes>
+
+---
+
+# Robert C. Martin
+
+<img src={UncleBob}/>
+
+<Logo/>
+
+<Notes>
+
+  - Introducción de los principios SOLID a inicos de los 2000s
+  - Coautor manifiesto ágil
+  - Autor Clean Code, Clean Architecture
+
+</Notes>
+
+---
+
+## Single Responsibility Principle (SRP)
+
+  - Un módulo debería tener una, y solo una, razón para cambiar.
+  - A más responsabilidades tiene un módulo es más sensible a cambiar.
+  - Cuantas más responsabilidades tiene un módulo más acoplado está.
+  - Cuanto más acoplamiento menos tolerancia al cambio.
+
+<Logo/>
+
+---
+
+<CodeSurfer>
+
+```typescript title="Módulo con más de una responsabilidad"
+  class Person {
+    readonly name: string
+
+    constructor(name: string) {
+      this.name = name
+    }
+
+    walk(): void {
+      // implementation
+    }
+
+    printName(): void {
+      console.log(this.name)
+    }
+  }
+  ```
+
+  ```typescript title="Responsabilidades separadas"
+  class Person {
+    readonly name: string
+
+    constructor(name: string) {
+      this.name = name
+    }
+
+    walk(): void {
+      // implementation
+    }
+  }
+
+  class Printer {
+    static log(expression: string): void {
+      console.log(expression)
+    }
+  }
+  ```
+
+</CodeSurfer>
+
+<Logo/>
+
+<Notes>
+
+  - Módulo con más de una responsabilidad
+    - ¿Qué responsabilidades tiene esta clase?
+    - ¿Por qué no es recomendable que tenga múltiples responsabilidades?
+    - ¿Cómo podemos separar responsabilidades?
+
+</Notes>
+
+---
+
+## Open Close Principle (OCP)
+
+  - Un artefacto de software debe estar abierto para su extensión y cerrado para su modificación
+
+<Logo/>
+
+---
+
+## Liskov Substitution Principle (LSP)
+
+<Logo/>
+
+---
+
+## Interface Segregation Principle (ISP)
+
+<Logo/>
+
+---
+
+## Dependency Inversion Principle (DIP)
+
+<Logo/>
