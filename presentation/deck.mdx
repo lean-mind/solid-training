@@ -16,6 +16,7 @@ export const theme = {
 <Notes>
 
   - No son dogmas
+  - No siempre son aplicables
   - Principios que nos guían para la generación de código más sostenible
   - Cinco principios básicos de la programación orientada a objetos
   - Su conocimiento ayuda en la implementación de patrones de diseño
@@ -69,7 +70,7 @@ export const theme = {
       console.log(this.name)
     }
   }
-  ```
+```
 
   ```typescript title="Responsabilidades separadas"
   class Person {
@@ -89,7 +90,7 @@ export const theme = {
       console.log(expression)
     }
   }
-  ```
+```
 
 </CodeSurfer>
 
@@ -105,6 +106,31 @@ export const theme = {
 </Notes>
 
 ---
+
+<CodeSurfer>
+
+  ```typescript title="Módulo con más de una responsabilidad"
+  class Person {
+  readonly name: string
+
+  constructor(name: string) {
+  this.name = name
+}
+
+  walk(): void {
+  // implementation
+}
+
+  printName(): void {
+  console.log(this.name)
+}
+}
+  ```
+
+</CodeSurfer>
+
+---
+
 
 ## Open Close Principle (OCP)
 
