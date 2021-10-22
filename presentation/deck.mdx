@@ -43,10 +43,10 @@ export const theme = {
 
 ## Single Responsibility Principle (SRP)
 
-  - Un módulo debería tener una, y solo una, razón para cambiar.
-  - A más responsabilidades tiene un módulo es más sensible a cambiar.
-  - Cuantas más responsabilidades tiene un módulo más acoplado está.
-  - Cuanto más acoplamiento menos tolerancia al cambio.
+  - Un módulo debería tener una, y solo una, razón para cambiar
+  - A más responsabilidades tiene un módulo es más sensible a cambiar
+  - Cuantas más responsabilidades tiene un módulo más acoplado está
+  - Cuanto más acoplamiento menos tolerancia al cambio
 
 <Logo/>
 
@@ -109,34 +109,60 @@ export const theme = {
 
 <CodeSurfer>
 
-  ```typescript title="Módulo con más de una responsabilidad"
-  class Person {
-  readonly name: string
+```typescript title="¿Qué hace esta función?"
+function removeTabAt(position: int): void {
+  removeTabViewAt(position)
+  const removedTab: Tab = mTabs.remove(position)
+  if (removedTab !== null) {
+    removedTab.reset()
+    sTabPool.release(removedTab)
+  }
 
-  constructor(name: string) {
-  this.name = name
-}
+  const newTabCount = mTabs.size()
+  for (let i = position; i < newTabCount; i++) {
+    mTabs.get(i).setPosition(i)
+  }
 
-  walk(): void {
-  // implementation
+  const selectedTabPosition = mSelectedTab !== null ? mSelectedTab.getPosition() : 0
+  if (selectedTabPosition === position) {
+    selectTab(mTabs.isEmpty() ? null : mTabs.get(Math.max(0, position - 1)))
+  }
 }
+```
 
-  printName(): void {
-  console.log(this.name)
+```typescript title="Función aplicando SRP"
+function removeTabAt(position: number): void {
+  destroyTab(position)
+  shiftTabsFrom(position)
+  updateTabSelection(position)
 }
-}
+  ```
+
+```typescript title="Ejemplo User -> Repository"
+
   ```
 
 </CodeSurfer>
 
 ---
 
-
 ## Open Close Principle (OCP)
 
   - Un artefacto de software debe estar abierto para su extensión y cerrado para su modificación
 
 <Logo/>
+
+<Notes>
+
+  -
+
+</Notes>
+
+---
+
+# Ejemplo OCP
+
+ - Falta implementar Camarero?
 
 ---
 
