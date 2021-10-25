@@ -1,6 +1,6 @@
 import defaultTheme, {highlight} from 'mdx-deck/themes'
 import {Logo} from '../components'
-import {CodeSurfer} from "code-surfer";
+import {CodeSurfer, CodeSurferColumns, Step} from "code-surfer";
 import UncleBob from "../assets/UncleBob.png"
 import solid from "../assets/solid.png"
 
@@ -136,11 +136,60 @@ function removeTabAt(position: number): void {
   shiftTabsFrom(position)
   updateTabSelection(position)
 }
-  ```
+```
 
-```typescript title="Ejemplo User -> Repository"
 
-  ```
+</CodeSurfer>
+
+---
+
+<CodeSurfer>
+
+```ts
+class User {
+  readonly name: string
+  readonly surname: string
+  readonly db: DB
+
+  constructor(name: string, surname: string, db: DB) {
+    this.name = name
+    this.surname = name
+    this.db = db
+  }
+
+  getFullName(): string {
+    return `${this.name} ${this.surname}`
+  }
+
+  save(): void {
+    this.db.save(this.getFullName())
+  }
+}
+```
+
+```ts
+class User {
+  readonly name: string
+  readonly surname: string
+
+  constructor(name: string, surname: string) {
+    this.name = name
+    this.surname = name
+  }
+
+  getFullName(): string {
+    return `${this.name} ${this.surname}`
+  }
+}
+
+class UserRepository {
+  private db: DB = new DB()
+
+  save(user: User): void {
+    this.db.save(user)
+  }
+}
+```
 
 </CodeSurfer>
 
@@ -160,9 +209,116 @@ function removeTabAt(position: number): void {
 
 ---
 
-# Ejemplo OCP
+<CodeSurferColumns>
 
- - Falta implementar Camarero?
+<Step subtitle="First Step">
+
+```ts
+  class AreaCalculator {
+    sumRectangleAreas(rectangles: Rectangle[]): number {
+      let totalArea = 0
+
+      for(const rectangle of rectangles) {
+        totalArea += (rectangle.width * rectangle.heigth)
+      }
+
+      return totalArea
+    }
+  }
+```
+
+```ts
+interface Rectangle {
+  width: number
+  heigth: number
+}
+```
+
+</Step>
+
+<Step>
+
+```ts
+class AreaCalculator {
+  sumRectangleAreas(rectangles: Rectangle[]): number {
+    let totalArea = 0
+
+    for(const rectangle of rectangles) {
+      totalArea += (rectangle.width * rectangle.heigth)
+    }
+
+    return totalArea
+  }
+
+  sumCircleAreas(circles: Circle[]): number {
+    let totalArea = 0
+
+    for(const circle of circles) {
+      totalArea += (circle.radius * Math.pow(Math.PI, 2))
+    }
+
+    return totalArea
+  }
+}
+```
+
+```ts
+interface Rectangle {
+  width: number
+  heigth: number
+}
+
+interface Circle {
+  radius: number
+}
+```
+
+</Step>
+
+<Step>
+
+```ts
+class AreaCalculator {
+  sumAreas(shapes: Shape[]): number {
+    let totalArea = 0
+
+    for(const shape of shapes) {
+      totalArea += shape.calculateArea()
+    }
+
+    return totalArea
+  }
+}
+```
+
+```ts
+interface Shape {
+  calculateArea(): number
+}
+
+class Circle implements Shape {
+  radius: number
+
+  calculateArea(): number {
+    return (this.radius * Math.pow(Math.PI, 2))
+  }
+}
+
+class Rectangle implements Shape {
+  width: number
+  heigth: number
+
+  calculateArea(): number {
+    return this.width * this.heigth
+  }
+}
+```
+
+</Step>
+
+</CodeSurferColumns>
+
+<Logo/>
 
 ---
 

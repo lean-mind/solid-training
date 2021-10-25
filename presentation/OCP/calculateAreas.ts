@@ -9,7 +9,7 @@ interface Rectangle {
 
 class AreaCalculator {
   sumRectangleAreas(rectangles: Rectangle[]): number {
-    const totalArea = 0
+    let totalArea = 0
 
     for(const rectangle of rectangles) {
       totalArea += (rectangle.width * rectangle.heigth)
@@ -19,7 +19,7 @@ class AreaCalculator {
   }
 
   sumCircleAreas(circles: Circle[]): number {
-    const totalArea = 0
+    let totalArea = 0
 
     for(const circle of circles) {
       totalArea += (circle.radius * Math.pow(Math.PI, 2))
@@ -52,8 +52,8 @@ class Rectangle implements Shape {
 }
 
 class AreaCalculator {
-  sumAreas(shapes: Shapes[]): number {
-    const totalArea = 0
+  sumAreas(shapes: Shape[]): number {
+    let totalArea = 0
 
     for(const shape of shapes) {
       totalArea += shape.calculateArea()
