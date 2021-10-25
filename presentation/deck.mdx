@@ -72,7 +72,7 @@ export const theme = {
   }
 ```
 
-  ```typescript title="Responsabilidades separadas"
+```typescript title="Responsabilidades separadas"
   class Person {
     readonly name: string
 
@@ -211,7 +211,7 @@ class UserRepository {
 
 <CodeSurferColumns>
 
-<Step subtitle="First Step">
+<Step>
 
 ```ts
   class AreaCalculator {
@@ -324,11 +324,110 @@ class Rectangle implements Shape {
 
 ## Liskov Substitution Principle (LSP)
 
+  - Todos los hijos deberían poder ser utilizado como sus padres.
+
+<Logo/>
+
+---
+
+<CodeSurferColumns>
+
+<Step>
+
+```ts
+interface Bird {
+  eat(): void
+  tweet(): void
+  fly(): void
+}
+```
+
+```ts
+class Pigeon implements Bird {
+  eat() {
+    // eat implementation
+  }
+
+  tweet() {
+    // tweet implementation
+  }
+
+  fly() {
+    // fly implementation
+  }
+}
+```
+
+```ts
+class Penguin implements Bird {
+  eat() {
+    // eat implementation
+  }
+
+  tweet() {
+    // tweet implementation
+  }
+
+  fly() {
+    throw new Error('Penguins cannot fly.')
+  }
+}
+```
+
+</Step>
+
+<Step>
+
+```ts
+interface Bird {
+  eat(): void
+  tweet(): void
+}
+
+interface FlyingBird extends Bird {
+  fly(): void
+}
+```
+
+```ts
+class Pigeon implements FlyingBird {
+  eat() {
+    // eat implementation
+  }
+
+  tweet() {
+    // tweet implementation
+  }
+
+  fly() {
+    // fly implementation
+  }
+}
+```
+
+```ts
+class Penguin implements Bird {
+  eat() {
+    // eat implementation
+  }
+
+  tweet() {
+    // tweet implementation
+  }
+}
+```
+
+</Step>
+
+</CodeSurferColumns>
+
 <Logo/>
 
 ---
 
 ## Interface Segregation Principle (ISP)
+
+  - Ninguna clase debería depender de métodos que no usa.
 
 <Logo/>
 
@@ -336,4 +435,14 @@ class Rectangle implements Shape {
 
 ## Dependency Inversion Principle (DIP)
 
+  - Los módulos de alto nivel no deberían depender de los módulos de bajo nivel. Ambos deberían depender de abstracciones.
+  - Las abstracciones no deberían depender de los detalles. Los detalles (implementaciones concretas) deben depender de abstracciones.
+
 <Logo/>
+
+<Notes>
+
+  - Evitar que el dominio dependa de implementaciones de base de datos.
+  - Proteger la lógica de dominio.
+
+</Notes>
