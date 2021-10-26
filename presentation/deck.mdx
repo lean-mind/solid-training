@@ -33,7 +33,7 @@ export const theme = {
 
 <Notes>
 
-  - Introducción de los principios SOLID a inicos de los 2000s
+  - Introducción de los principios SOLID a inicios de los 2000s
   - Coautor manifiesto ágil
   - Autor Clean Code, Clean Architecture
 
@@ -72,7 +72,27 @@ export const theme = {
   }
 ```
 
-```typescript title="Responsabilidades separadas"
+```diff 12:14
+```
+
+</CodeSurfer>
+
+<Logo/>
+
+<Notes>
+
+  - Módulo con más de una responsabilidad
+    - ¿Qué responsabilidades tiene esta clase?
+    - ¿Por qué no es recomendable que tenga múltiples responsabilidades?
+    - ¿Cómo podemos separar responsabilidades?
+
+</Notes>
+
+---
+
+<CodeSurfer>
+
+```typescript diff title="Responsabilidades separadas"
   class Person {
     readonly name: string
 
@@ -90,6 +110,9 @@ export const theme = {
       console.log(expression)
     }
   }
+```
+
+```diff 12:17
 ```
 
 </CodeSurfer>
@@ -130,11 +153,13 @@ function removeTabAt(position: int): void {
 }
 ```
 
-```typescript title="Función aplicando SRP"
+```typescript title="Función aplicando SRP" 1:7
 function removeTabAt(position: number): void {
-  destroyTab(position)
+  releaseTabAt(position)
   shiftTabsFrom(position)
-  updateTabSelection(position)
+  if (isSelectedTab(position)) {
+    updateTabSelection(position)
+  }
 }
 ```
 
@@ -145,7 +170,7 @@ function removeTabAt(position: number): void {
 
 <CodeSurfer>
 
-```ts
+```typescript
 class User {
   readonly name: string
   readonly surname: string
@@ -167,7 +192,7 @@ class User {
 }
 ```
 
-```ts
+```typescript
 class User {
   readonly name: string
   readonly surname: string
@@ -197,7 +222,8 @@ class UserRepository {
 
 ## Open Close Principle (OCP)
 
-  - Un artefacto de software debe estar abierto para su extensión y cerrado para su modificación
+  - Un artefacto de software debe estar abierto<br />
+    para su extensión y cerrado para su modificación
 
 <Logo/>
 
@@ -213,21 +239,21 @@ class UserRepository {
 
 <Step>
 
-```ts
-  class AreaCalculator {
-    sumRectangleAreas(rectangles: Rectangle[]): number {
-      let totalArea = 0
+```typescript
+class AreaCalculator {
+  sumRectangleAreas(rectangles: Rectangle[]): number {
+    let totalArea = 0
 
-      for(const rectangle of rectangles) {
-        totalArea += (rectangle.width * rectangle.heigth)
-      }
-
-      return totalArea
+    for(const rectangle of rectangles) {
+      totalArea += (rectangle.width * rectangle.heigth)
     }
+
+    return totalArea
   }
+}
 ```
 
-```ts
+```typescript
 interface Rectangle {
   width: number
   heigth: number
@@ -238,7 +264,7 @@ interface Rectangle {
 
 <Step>
 
-```ts
+```typescript
 class AreaCalculator {
   sumRectangleAreas(rectangles: Rectangle[]): number {
     let totalArea = 0
@@ -262,7 +288,7 @@ class AreaCalculator {
 }
 ```
 
-```ts
+```typescript
 interface Rectangle {
   width: number
   heigth: number
@@ -277,7 +303,7 @@ interface Circle {
 
 <Step>
 
-```ts
+```typescript
 class AreaCalculator {
   sumAreas(shapes: Shape[]): number {
     let totalArea = 0
@@ -291,7 +317,7 @@ class AreaCalculator {
 }
 ```
 
-```ts
+```typescript
 interface Shape {
   calculateArea(): number
 }
@@ -334,7 +360,7 @@ class Rectangle implements Shape {
 
 <Step>
 
-```ts
+```typescript
 interface Bird {
   eat(): void
   tweet(): void
@@ -342,7 +368,7 @@ interface Bird {
 }
 ```
 
-```ts
+```typescript
 class Pigeon implements Bird {
   eat() {
     // eat implementation
@@ -358,7 +384,7 @@ class Pigeon implements Bird {
 }
 ```
 
-```ts
+```typescript
 class Penguin implements Bird {
   eat() {
     // eat implementation
@@ -378,7 +404,7 @@ class Penguin implements Bird {
 
 <Step>
 
-```ts
+```typescript
 interface Bird {
   eat(): void
   tweet(): void
@@ -389,7 +415,7 @@ interface FlyingBird extends Bird {
 }
 ```
 
-```ts
+```typescript
 class Pigeon implements FlyingBird {
   eat() {
     // eat implementation
@@ -405,7 +431,7 @@ class Pigeon implements FlyingBird {
 }
 ```
 
-```ts
+```typescript
 class Penguin implements Bird {
   eat() {
     // eat implementation

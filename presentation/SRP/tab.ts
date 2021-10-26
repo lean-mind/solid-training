@@ -17,13 +17,17 @@ function removeTabAt(position: int): void {
   }
 }
 
+// ---
+
 function removeTabAt(position: number): void {
-  destroyTab(position)
+  releaseTabAt(position)
   shiftTabsFrom(position)
-  updateTabSelection(position)
+  if (isSelectedTab(position)) {
+    updateTabSelection(position)
+  }
 }
 
-function destroyTab(position: number): void {
+function releaseTabAt(position: number): void {
   removeTabViewAt(position)
   const removedTab: Tab = tabs.remove(position)
   if (removedTab != null) {
@@ -34,19 +38,15 @@ function destroyTab(position: number): void {
 
 function shiftTabsFrom(position: number): void {
   for (let i = position; i < tabs.size(); i++) {
-    tabs.get(i).setPosition(i);
+    tabs.get(i).setPosition(i)
   }
 }
 
-function updateTabSelection(position: number): void{
-  if (selectedTabPosition() === position) {
-    selectTab(tabs.isEmpty() ? null :
-    tabs.get(Math.max(0, position - 1)));
-  }
-}
-function selectedTabPosition(): number{
- return selectedTab != null ? selectedTab.getPosition() : 0;
+function isSelectedTab(position: number): boolean {
+  const selectedTabPosition = selectedTab != null ? selectedTab.getPosition() : 0
+  return selectedTabPosition === position
 }
 
-
-
+function updateTabSelection(position: number): void {
+  selectTab(tabs.isEmpty() ? null : tabs.get(Math.max(0, position - 1)))
+}
