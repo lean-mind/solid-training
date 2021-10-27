@@ -163,7 +163,6 @@ function removeTabAt(position: number): void {
 }
 ```
 
-
 </CodeSurfer>
 
 ---
@@ -220,6 +219,16 @@ class UserRepository {
 
 ---
 
+## SRP Code Smells
+
+  - Clases y funciones muy largas
+  - Clases con muchos métodos públicos
+  - Uso de frameworks o bases de datos en dominio
+
+<Logo/>
+
+---
+
 ## Open Close Principle (OCP)
 
   - Un artefacto de software debe estar abierto<br />
@@ -229,7 +238,8 @@ class UserRepository {
 
 <Notes>
 
-  -
+  - ¿Qué significa esto?
+  - La aplicación estricta de este principio aumenta mucho la complejidad del código
 
 </Notes>
 
@@ -348,6 +358,14 @@ class Rectangle implements Shape {
 
 ---
 
+## OCP Code Smells
+
+  - Clase que estamos constantemente modificando
+
+<Logo/>
+
+---
+
 ## Liskov Substitution Principle (LSP)
 
   - Todos los hijos deberían poder ser utilizado como sus padres.
@@ -361,41 +379,100 @@ class Rectangle implements Shape {
 <Step>
 
 ```typescript
+class Bird {
+  eat(): void { }
+  tweet(): void { }
+  fly(): void { }
+}
+
+```
+
+```typescript
+class Pigeon extends Bird { }
+
+class Penguin extends Bird { }
+```
+
+</Step>
+
+<Step>
+
+```typescript
+class Bird {
+  eat(): void { }
+  tweet(): void { }
+}
+
+class FlyingBird extends Bird {
+  fly(): void { }
+}
+```
+
+```typescript
+class Pigeon extends FlyingBird { }
+
+class Penguin extends Bird { }
+```
+
+</Step>
+
+</CodeSurferColumns>
+
+<Logo/>
+
+<Notes>
+
+  - ¿Qué hacemos si un pingüino no puede volar?
+  - En otros lenguajes como Java se podría hacer un override de fly() y lanzar una excepción
+  - En TS no podemos hacer override
+
+</Notes>
+
+---
+
+## LSP Code Smells
+
+  - Sobran métodos en clases hijas
+  - Métodos de las clases hijas lanzan excepciones o no hace nada al hacer override
+
+<Logo/>
+
+---
+
+## Interface Segregation Principle (ISP)
+
+  - Ninguna clase debería depender de métodos que no usa.
+
+<Logo/>
+
+---
+
+## Rompiendo ISP
+
+<CodeSurferColumns>
+
+<Step>
+
+```typescript
 interface Bird {
   eat(): void
   tweet(): void
   fly(): void
+  swing(): void
+  run(): void
 }
 ```
 
 ```typescript
 class Pigeon implements Bird {
-  eat() {
-    // eat implementation
+  eat(): void { }
+  tweet(): void { }
+  fly(): void { }
+  swing(): void {
+    throw new Error('Pigeons cannot swing')
   }
-
-  tweet() {
-    // tweet implementation
-  }
-
-  fly() {
-    // fly implementation
-  }
-}
-```
-
-```typescript
-class Penguin implements Bird {
-  eat() {
-    // eat implementation
-  }
-
-  tweet() {
-    // tweet implementation
-  }
-
-  fly() {
-    throw new Error('Penguins cannot fly.')
+  run(): void {
+    throw new Error('Pigeons cannot run')
   }
 }
 ```
@@ -405,41 +482,30 @@ class Penguin implements Bird {
 <Step>
 
 ```typescript
-interface Bird {
-  eat(): void
-  tweet(): void
-}
-
-interface FlyingBird extends Bird {
-  fly(): void
-}
-```
-
-```typescript
-class Pigeon implements FlyingBird {
-  eat() {
-    // eat implementation
-  }
-
-  tweet() {
-    // tweet implementation
-  }
-
-  fly() {
-    // fly implementation
-  }
-}
-```
-
-```typescript
 class Penguin implements Bird {
-  eat() {
-    // eat implementation
+  eat(): void { }
+  tweet(): void { }
+  fly(): void {
+    throw new Error('Penguins cannot fly')
   }
+  swing(): void { }
+  run(): void {
+    throw new Error('Penguins cannot run')
+  }
+}
+```
 
-  tweet() {
-    // tweet implementation
+```typescript
+class Ostrich implements Bird {
+  eat(): void { }
+  tweet(): void { }
+  fly(): void {
+    throw new Error('Ostriches cannot fly')
   }
+  swing(): void {
+    throw new Error('Ostriches cannot swing')
+  }
+  run(): void { }
 }
 ```
 
@@ -451,9 +517,82 @@ class Penguin implements Bird {
 
 ---
 
-## Interface Segregation Principle (ISP)
+## Aplicando ISP
 
-  - Ninguna clase debería depender de métodos que no usa.
+<CodeSurferColumns>
+
+<Step>
+
+```typescript
+interface Bird {
+  eat(): void
+  tweet(): void
+  fly(): void
+  swing(): void
+  run(): void
+}
+```
+
+```typescript
+interface Bird {
+  eat(): void
+  tweet(): void
+}
+
+interface Flying {
+  fly(): void
+}
+
+interface Swinging {
+  swing(): void
+}
+
+interface Running {
+  run(): void
+}
+  ```
+
+</Step>
+
+<Step>
+
+```typescript
+class Pigeon implements Bird, Flying {
+  eat(): void { }
+  tweet(): void { }
+  fly(): void { }
+}
+```
+
+```typescript
+class Penguin implements Bird, Swinging {
+  eat(): void { }
+  tweet(): void { }
+  swing(): void { }
+}
+```
+
+```typescript
+class Ostrich implements Bird, Running {
+  eat(): void { }
+  tweet(): void { }
+  run(): void { }
+}
+```
+
+</Step>
+
+</CodeSurferColumns>
+
+<Logo/>
+
+---
+
+## ISP Bad Smells
+
+  - Fat interfaces
+  - Métodos que sobran
+  - Lanzan excepciones o no hacen nada al hacer override
 
 <Logo/>
 

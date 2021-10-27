@@ -1,32 +1,22 @@
-interface Bird {
-  eat(): void
-  tweet(): void
+class Bird {
+  eat(): void { }
+  tweet(): void { }
+  fly(): void { }
 }
 
-interface FlyingBird extends Bird {
-  fly(): void
+class Pigeon extends Bird { }
+
+class Penguin extends Bird { }
+
+class Bird {
+  eat(): void { }
+  tweet(): void { }
 }
 
-class Pigeon implements FlyingBird {
-  eat() {
-    // eat implementation
-  }
-
-  tweet() {
-    // tweet implementation
-  }
-
-  fly() {
-    // fly implementation
-  }
+class FlyingBird extends Bird {
+  fly(): void { }
 }
 
-class Penguin implements Bird {
-  eat() {
-    // eat implementation
-  }
+class Pigeon extends FlyingBird { }
 
-  tweet() {
-    // tweet implementation
-  }
-}
+class Penguin extends Bird { }

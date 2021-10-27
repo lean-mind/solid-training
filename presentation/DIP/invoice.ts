@@ -18,7 +18,7 @@ interface InvoiceRepository {
   save(invoice: Invoice)
 }
 
-class InvoiceMysqlRepository implements InvoiceRepository{
+class InvoiceMysqlRepository implements InvoiceRepository {
   save(invoice: Invoice) { }
 }
 
