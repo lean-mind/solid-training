@@ -1,7 +1,7 @@
-class InvoiceService {
-  compute (invoice: Invoice) {
+class ComputeSingleInvoice {
+  exec(invoice: Invoice) {
     const repository = new InvoiceRepository()
-    // Domain logic
+    invoice.compute()
     repository.save(invoice)
   }
 }
@@ -22,11 +22,11 @@ class InvoiceMysqlRepository implements InvoiceRepository {
   save(invoice: Invoice) { }
 }
 
-class InvoiceService {
+class ComputeSingleInvoice {
   constructor(private repository: InvoiceRepository) { }
 
-  compute (invoice: Invoice) {
-    // Domain logic
+  exec(invoice: Invoice) {
+    invoice.compute()
     this.repository.save(invoice)
   }
 }

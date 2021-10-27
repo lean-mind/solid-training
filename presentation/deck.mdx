@@ -92,7 +92,7 @@ export const theme = {
 
 <CodeSurfer>
 
-```typescript diff title="Responsabilidades separadas"
+```typescript title="Responsabilidades separadas"
   class Person {
     readonly name: string
 
@@ -221,9 +221,10 @@ class UserRepository {
 
 ## SRP Code Smells
 
-  - Clases y funciones muy largas
-  - Clases con muchos métodos públicos
+  - Clases y funciones muy largas (miles de líneas)
+  - Métodos públicos que deberían ser privados
   - Uso de frameworks o bases de datos en dominio
+  - Nombres demasiado genéricos (Utils, Managers...)
 
 <Logo/>
 
@@ -358,9 +359,14 @@ class Rectangle implements Shape {
 
 ---
 
+## Ejemplo interfaz repository
+
+---
+
 ## OCP Code Smells
 
-  - Clase que estamos constantemente modificando
+  - Estamos constantemente modificando una clase
+  - Feature envy
 
 <Logo/>
 
@@ -368,7 +374,7 @@ class Rectangle implements Shape {
 
 ## Liskov Substitution Principle (LSP)
 
-  - Todos los hijos deberían poder ser utilizado como sus padres.
+  - Todos los subtipos deberían poder ser utilizados como sus padres
 
 <Logo/>
 
@@ -390,7 +396,11 @@ class Bird {
 ```typescript
 class Pigeon extends Bird { }
 
-class Penguin extends Bird { }
+class Penguin extends Bird {
+  override fly() {
+    throw new Error('Penguins cannot fly')
+  }
+}
 ```
 
 </Step>
@@ -424,7 +434,6 @@ class Penguin extends Bird { }
 
   - ¿Qué hacemos si un pingüino no puede volar?
   - En otros lenguajes como Java se podría hacer un override de fly() y lanzar una excepción
-  - En TS no podemos hacer override
 
 </Notes>
 
@@ -434,6 +443,8 @@ class Penguin extends Bird { }
 
   - Sobran métodos en clases hijas
   - Métodos de las clases hijas lanzan excepciones o no hace nada al hacer override
+  - Uso de "typeof" o "instanceof"
+  - Uso de _type cast_ ("as")
 
 <Logo/>
 
@@ -441,13 +452,11 @@ class Penguin extends Bird { }
 
 ## Interface Segregation Principle (ISP)
 
-  - Ninguna clase debería depender de métodos que no usa.
+  - Ninguna clase o interfaz debería depender de métodos que no usa
 
 <Logo/>
 
 ---
-
-## Rompiendo ISP
 
 <CodeSurferColumns>
 
@@ -517,11 +526,7 @@ class Ostrich implements Bird {
 
 ---
 
-## Aplicando ISP
-
-<CodeSurferColumns>
-
-<Step>
+<CodeSurfer>
 
 ```typescript
 interface Bird {
@@ -550,11 +555,7 @@ interface Swinging {
 interface Running {
   run(): void
 }
-  ```
-
-</Step>
-
-<Step>
+```
 
 ```typescript
 class Pigeon implements Bird, Flying {
@@ -580,19 +581,21 @@ class Ostrich implements Bird, Running {
 }
 ```
 
-</Step>
-
-</CodeSurferColumns>
+</CodeSurfer>
 
 <Logo/>
 
 ---
 
-## ISP Bad Smells
+## Ejemplo gas contract pdf
 
-  - Fat interfaces
-  - Métodos que sobran
+---
+
+## ISP Code Smells
+
+  - Métodos que no se invocan
   - Lanzan excepciones o no hacen nada al hacer override
+  - Acoplamiento indeseado entre consumidores de una interfaz
 
 <Logo/>
 
@@ -611,3 +614,49 @@ class Ostrich implements Bird, Running {
   - Proteger la lógica de dominio.
 
 </Notes>
+
+---
+
+<CodeSurfer>
+
+```typescript
+class ComputeSingleInvoice {
+  exec(invoice: Invoice) {
+    const repository = new InvoiceRepository()
+    invoice.compute()
+    repository.save(invoice)
+  }
+}
+
+class InvoiceRepository {
+  save(invoice: Invoice) { }
+}
+  ```
+
+
+```typescript
+interface InvoiceRepository {
+  save(invoice: Invoice)
+}
+
+class InvoiceMysqlRepository implements InvoiceRepository {
+  save(invoice: Invoice) { }
+}
+
+class ComputeSingleInvoice {
+  constructor(private repository: InvoiceRepository) { }
+
+  exec(invoice: Invoice) {
+    invoice.compute()
+    this.repository.save(invoice)
+  }
+}
+```
+
+</CodeSurfer>
+
+---
+
+## DIP Code Smells
+
+  - Nuestro dominio depende de implementaciones y no de abstracciones
