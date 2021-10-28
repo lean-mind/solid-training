@@ -3,13 +3,18 @@ import {Logo} from '../components'
 import {CodeSurfer, CodeSurferColumns, Step} from "code-surfer";
 import UncleBob from "../assets/UncleBob.png"
 import solid from "../assets/solid.png"
+import srp from "../assets/srp.png"
+import ocp from "../assets/ocp.png"
+import lsp from "../assets/lsp.png"
+import isp from "../assets/isp.png"
+import dip from "../assets/dip.png"
 
 export const theme = {
   ...defaultTheme,
   ...highlight
 }
 
-<img src={solid}/>
+<img src={solid} style="width: 1191px"/>
 
 <Logo/>
 
@@ -35,13 +40,32 @@ export const theme = {
 
   - Introducción de los principios SOLID a inicios de los 2000s
   - Coautor manifiesto ágil
-  - Autor Clean Code, Clean Architecture
+  - Autor Clean Code, Clean Architecture, the clean coder entre otros
+
+
+</Notes>
+
+---
+
+## Objetivos
+
+  - Reducir el acoplamiento del código
+  - Aumentar la flexibilidad del código
+
+<Logo/>
+
+<Notes>
+
+  - Se dice que dos conceptos están acoplados cuando tienen alta dependencia entre ellos (cambiar uno implica cambiar el otro)
+  - Decimos que un código es flexible cuando modificarlo o ampliarlo implica un coste bajo (tiempo, esfuerzo, dinero)
 
 </Notes>
 
 ---
 
 ## Single Responsibility Principle (SRP)
+
+<img src={srp} style="width: 600px"/>
 
   - Un módulo debería tener una, y solo una, razón para cambiar
   - A más responsabilidades tiene un módulo es más sensible a cambiar
@@ -191,7 +215,7 @@ class User {
 }
 ```
 
-```typescript
+```typescript 1:21
 class User {
   readonly name: string
   readonly surname: string
@@ -205,7 +229,7 @@ class User {
     return `${this.name} ${this.surname}`
   }
 }
-
+-----------------------------------------
 class UserRepository {
   private db: DB = new DB()
 
@@ -217,11 +241,21 @@ class UserRepository {
 
 </CodeSurfer>
 
+<Logo/>
+
+
+<Notes>
+
+  - ¿Qué responsabilidades se están mezclando?
+  - ¿Qué podemos hacer para separar responsabilidades?
+
+</Notes>
+
 ---
 
 ## SRP Code Smells
 
-  - Clases y funciones muy largas (miles de líneas)
+  - Clases y funciones muy largas (cientos/miles de líneas)
   - Métodos públicos que deberían ser privados
   - Uso de frameworks o bases de datos en dominio
   - Nombres demasiado genéricos (Utils, Managers...)
@@ -232,6 +266,8 @@ class UserRepository {
 
 ## Open Close Principle (OCP)
 
+<img src={ocp} style="width: 600px"/>
+
   - Un artefacto de software debe estar abierto<br />
     para su extensión y cerrado para su modificación
 
@@ -240,7 +276,7 @@ class UserRepository {
 <Notes>
 
   - ¿Qué significa esto?
-  - La aplicación estricta de este principio aumenta mucho la complejidad del código
+  - Aplicar este principio requiere abstracciones y una mala abstracción aumenta mucho la complejidad
 
 </Notes>
 
@@ -314,7 +350,7 @@ interface Circle {
 
 <Step>
 
-```typescript
+```typescript 1:11
 class AreaCalculator {
   sumAreas(shapes: Shape[]): number {
     let totalArea = 0
@@ -328,7 +364,7 @@ class AreaCalculator {
 }
 ```
 
-```typescript
+```typescript 1:20
 interface Shape {
   calculateArea(): number
 }
@@ -359,10 +395,6 @@ class Rectangle implements Shape {
 
 ---
 
-## Ejemplo interfaz repository
-
----
-
 ## OCP Code Smells
 
   - Estamos constantemente modificando una clase
@@ -373,6 +405,8 @@ class Rectangle implements Shape {
 ---
 
 ## Liskov Substitution Principle (LSP)
+
+<img src={lsp} style="width: 600px"/>
 
   - Todos los subtipos deberían poder ser utilizados como sus padres
 
@@ -433,7 +467,7 @@ class Penguin extends Bird { }
 <Notes>
 
   - ¿Qué hacemos si un pingüino no puede volar?
-  - En otros lenguajes como Java se podría hacer un override de fly() y lanzar una excepción
+  - Override a partir de la versión 4.3 de TS
 
 </Notes>
 
@@ -452,6 +486,8 @@ class Penguin extends Bird { }
 
 ## Interface Segregation Principle (ISP)
 
+<img src={isp} style="width: 600px"/>
+
   - Ninguna clase o interfaz debería depender de métodos que no usa
 
 <Logo/>
@@ -467,7 +503,7 @@ interface Bird {
   eat(): void
   tweet(): void
   fly(): void
-  swing(): void
+  swim(): void
   run(): void
 }
 ```
@@ -477,8 +513,8 @@ class Pigeon implements Bird {
   eat(): void { }
   tweet(): void { }
   fly(): void { }
-  swing(): void {
-    throw new Error('Pigeons cannot swing')
+  swim(): void {
+    throw new Error('Pigeons cannot swim')
   }
   run(): void {
     throw new Error('Pigeons cannot run')
@@ -497,7 +533,7 @@ class Penguin implements Bird {
   fly(): void {
     throw new Error('Penguins cannot fly')
   }
-  swing(): void { }
+  swim(): void { }
   run(): void {
     throw new Error('Penguins cannot run')
   }
@@ -511,8 +547,8 @@ class Ostrich implements Bird {
   fly(): void {
     throw new Error('Ostriches cannot fly')
   }
-  swing(): void {
-    throw new Error('Ostriches cannot swing')
+  swim(): void {
+    throw new Error('Ostriches cannot swim')
   }
   run(): void { }
 }
@@ -533,7 +569,7 @@ interface Bird {
   eat(): void
   tweet(): void
   fly(): void
-  swing(): void
+  swim(): void
   run(): void
 }
 ```
@@ -548,8 +584,8 @@ interface Flying {
   fly(): void
 }
 
-interface Swinging {
-  swing(): void
+interface Swimming {
+  swim(): void
 }
 
 interface Running {
@@ -566,10 +602,10 @@ class Pigeon implements Bird, Flying {
 ```
 
 ```typescript
-class Penguin implements Bird, Swinging {
+class Penguin implements Bird, Swimming {
   eat(): void { }
   tweet(): void { }
-  swing(): void { }
+  swim(): void { }
 }
 ```
 
@@ -587,14 +623,10 @@ class Ostrich implements Bird, Running {
 
 ---
 
-## Ejemplo gas contract pdf
-
----
-
 ## ISP Code Smells
 
   - Métodos que no se invocan
-  - Lanzan excepciones o no hacen nada al hacer override
+  - Lanzan excepciones o no hacen nada
   - Acoplamiento indeseado entre consumidores de una interfaz
 
 <Logo/>
@@ -603,15 +635,18 @@ class Ostrich implements Bird, Running {
 
 ## Dependency Inversion Principle (DIP)
 
-  - Los módulos de alto nivel no deberían depender de los módulos de bajo nivel. Ambos deberían depender de abstracciones.
-  - Las abstracciones no deberían depender de los detalles. Los detalles (implementaciones concretas) deben depender de abstracciones.
+<img src={dip} style="width: 600px"/>
+
+  - Los módulos de alto nivel no deberían depender de los módulos de bajo nivel
+  - Deberían depender de abstracciones
 
 <Logo/>
 
 <Notes>
 
-  - Evitar que el dominio dependa de implementaciones de base de datos.
-  - Proteger la lógica de dominio.
+  - Evitar que el dominio dependa de implementaciones de base de datos
+  - Proteger la lógica de dominio
+  - Mejorar testeo unitario
 
 </Notes>
 
@@ -622,13 +657,15 @@ class Ostrich implements Bird, Running {
 ```typescript
 class ComputeSingleInvoice {
   exec(invoice: Invoice) {
-    const repository = new InvoiceRepository()
+    const repository = new InvoiceMysqlRepository()
     invoice.compute()
     repository.save(invoice)
   }
 }
 
-class InvoiceRepository {
+class InvoiceMysqlRepository {
+  private mysql = new MySqlDatasource()
+
   save(invoice: Invoice) { }
 }
   ```
@@ -640,6 +677,8 @@ interface InvoiceRepository {
 }
 
 class InvoiceMysqlRepository implements InvoiceRepository {
+  constructor(private mysql: MySqlDatasource) { }
+
   save(invoice: Invoice) { }
 }
 
@@ -659,4 +698,4 @@ class ComputeSingleInvoice {
 
 ## DIP Code Smells
 
-  - Nuestro dominio depende de implementaciones y no de abstracciones
+  - En nuestro dominio hay alusiones a tecnologías
