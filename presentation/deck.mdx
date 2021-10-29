@@ -8,6 +8,7 @@ import ocp from "../assets/ocp.png"
 import lsp from "../assets/lsp.png"
 import isp from "../assets/isp.png"
 import dip from "../assets/dip.png"
+import coc from "../assets/coc.jpg"
 
 export const theme = {
   ...defaultTheme,
@@ -18,15 +19,13 @@ export const theme = {
 
 <Logo/>
 
-<Notes>
+---
 
-  - No son dogmas
-  - No siempre son aplicables
-  - Principios que nos guían para la generación de código más sostenible
-  - Cinco principios básicos de la programación orientada a objetos
-  - Su conocimiento ayuda en la implementación de patrones de diseño
+## Coste por Cambio (CoC)
 
-</Notes>
+<img src={coc}/>
+
+<Logo/>
 
 ---
 
@@ -42,8 +41,17 @@ export const theme = {
   - Coautor manifiesto ágil
   - Autor Clean Code, Clean Architecture, the clean coder entre otros
 
-
 </Notes>
+
+---
+
+## ¿Qué es SOLID?
+
+  - Cinco principios básicos de la programación orientada a objetos
+  - Nos guían para una generación de código más sostenible
+  - Su conocimiento ayuda en la implementación de patrones de diseño
+
+<Logo/>
 
 ---
 
@@ -58,8 +66,19 @@ export const theme = {
 
   - Se dice que dos conceptos están acoplados cuando tienen alta dependencia entre ellos (cambiar uno implica cambiar el otro)
   - Decimos que un código es flexible cuando modificarlo o ampliarlo implica un coste bajo (tiempo, esfuerzo, dinero)
+  - Generar código más fácil de mantener
 
 </Notes>
+
+---
+
+## Tener en cuenta
+
+  - No son dogmas
+  - No siempre son aplicables
+  - Su mala aplicación puede degenerar en sobreingeniería
+
+<Logo/>
 
 ---
 
@@ -189,6 +208,8 @@ function removeTabAt(position: number): void {
 
 </CodeSurfer>
 
+<Logo/>
+
 ---
 
 <CodeSurfer>
@@ -229,7 +250,7 @@ class User {
     return `${this.name} ${this.surname}`
   }
 }
------------------------------------------
+
 class UserRepository {
   private db: DB = new DB()
 
@@ -373,7 +394,7 @@ class Circle implements Shape {
   radius: number
 
   calculateArea(): number {
-    return (this.radius * Math.pow(Math.PI, 2))
+    return (Math.PI * Math.pow(this.radius, 2))
   }
 }
 
@@ -389,9 +410,48 @@ class Rectangle implements Shape {
 
 </Step>
 
+<Step>
+
+```typescript 1:11
+class AreaCalculator {
+  sumAreas(shapes: Shape[]): number {
+    let totalArea = 0
+
+    for(const shape of shapes) {
+      totalArea += shape.calculateArea()
+    }
+
+    return totalArea
+  }
+}
+```
+
+```typescript
+interface Shape {
+  calculateArea(): number
+}
+
+class Triangle implements Shape {
+  width: number
+  heigth: number
+
+  calculateArea(): number {
+    return (this.width * this.heigth) / 2
+  }
+}
+```
+
+</Step>
+
 </CodeSurferColumns>
 
 <Logo/>
+
+<Notes>
+
+  - ¿Qué tenemos que hacer si queremos sumar las áreas de triángulos?
+
+</Notes>
 
 ---
 
@@ -564,7 +624,7 @@ class Ostrich implements Bird {
 
 <CodeSurfer>
 
-```typescript
+```typescript 1:7
 interface Bird {
   eat(): void
   tweet(): void
@@ -574,7 +634,7 @@ interface Bird {
 }
 ```
 
-```typescript
+```typescript 1:16
 interface Bird {
   eat(): void
   tweet(): void
@@ -671,31 +731,52 @@ class InvoiceMysqlRepository {
   ```
 
 
-```typescript
+```typescript 1:18
+class ComputeSingleInvoice {
+  constructor(private repository: InvoiceRepository) { }
+
+  exec(invoice: Invoice): void {
+    invoice.compute()
+    this.repository.save(invoice)
+  }
+}
+
 interface InvoiceRepository {
-  save(invoice: Invoice)
+  save(invoice: Invoice): void
 }
 
 class InvoiceMysqlRepository implements InvoiceRepository {
   constructor(private mysql: MySqlDatasource) { }
 
-  save(invoice: Invoice) { }
-}
-
-class ComputeSingleInvoice {
-  constructor(private repository: InvoiceRepository) { }
-
-  exec(invoice: Invoice) {
-    invoice.compute()
-    this.repository.save(invoice)
-  }
+  save(invoice: Invoice): void { }
 }
 ```
 
 </CodeSurfer>
+
+<Logo/>
 
 ---
 
 ## DIP Code Smells
 
   - En nuestro dominio hay alusiones a tecnologías
+  - Uso de dependencias en dominio (sin control)
+
+<Logo/>
+
+<Notes>
+
+  - Utilizar dependencias de terceros en dominio aumenta el acoplamiento (una posible solución es crear un wrapper)
+
+</Notes>
+
+---
+
+## Recursos
+
+  - Clean Architecture - Robert C. Martin
+  - Clean Coders - (<a href="https://cleancoders.com/">https://cleancoders.com/</a>)
+  - Código Sostenible - (<a href="https://codigosostenible.com/">https://codigosostenible.com/</a>)
+
+<Logo/>
